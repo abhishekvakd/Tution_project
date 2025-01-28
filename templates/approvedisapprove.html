@@ -1,0 +1,48 @@
+{% extends "adminnav.html" %}
+
+{% block content %}
+<div class="container content">  
+    <center>
+        <h1>Show Student Details</h1>
+        {% for message in messages %}
+        <div class="alert alert-danger">{{ message }}</div>
+        {% endfor %}
+
+        <div class="table-responsive">
+            <table class="table table-striped mt-3">
+                <thead>
+                    <tr>
+                        <th>User type</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for data in user_data %}
+                    <tr>
+                        <td>
+                            {% if data.user_type == "2" %} Teacher
+                            {% elif data.user_type == "3" %} Student
+                            {% else %} Unknown {% endif %}
+
+                        </td>
+                        <td>{{ data.first_name }} {{ data.last_name }}</td>
+                        <td>{{ data.email }}</td>
+                        <td>
+                            {% if data.status == 0 %}
+                            <a href="{% url 'approve' data.id %}" class="btn btn-info">Approve</a>
+                            <a href="{% url 'disapprove' data.id %}" class="btn btn-danger">Disapprove</a>
+
+                            {% elif data.status == 1 %}
+                                <button class="btn btn-info" disabled>Approved</button>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </center>
+</div>
+{% endblock %}
